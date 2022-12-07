@@ -1,12 +1,12 @@
 {
-  "name": "material-dashboard-2-react",
+  "name": "switchive-admin",
   "version": "2.1.0",
   "private": true,
-  "author": "Creative Tim",
+  "author": "Developer Trisage",
   "license": "See license in https://www.creative-tim.com/license",
-  "description": "React version of Material Dashboard 2 by Creative Tim",
+  "description": "switchive dashboard",
   "bugs": {
-    "url": "https://github.com/creativetimofficial/material-dashboard-react/issues"
+    "url": ""
   },
   "repository": {
     "type": "git",
