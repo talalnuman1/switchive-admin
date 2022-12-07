@@ -10,6 +10,26 @@ import SignUp from "layouts/authentication/sign-up";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
+import { Route } from "react-router-dom";
+
+const publicRoutes = [
+  {
+    type: "collapse",
+    name: "Sign In",
+    key: "sign-in",
+    icon: <Icon fontSize="small">login</Icon>,
+    route: "/authentication/sign-in",
+    component: <SignIn />,
+  },
+  {
+    type: "collapse",
+    name: "Sign Up",
+    key: "sign-up",
+    icon: <Icon fontSize="small">assignment</Icon>,
+    route: "/authentication/sign-up",
+    component: <SignUp />,
+  },
+];
 
 const routes = [
   {
@@ -60,22 +80,18 @@ const routes = [
     route: "/profile",
     component: <Profile />,
   },
-  {
-    type: "collapse",
-    name: "Sign In",
-    key: "sign-in",
-    icon: <Icon fontSize="small">login</Icon>,
-    route: "/authentication/sign-in",
-    component: <SignIn />,
-  },
-  {
-    type: "collapse",
-    name: "Sign Up",
-    key: "sign-up",
-    icon: <Icon fontSize="small">assignment</Icon>,
-    route: "/authentication/sign-up",
-    component: <SignUp />,
-  },
 ];
 
-export default routes;
+const getRoutes = (allRoutes) =>
+  allRoutes.map((route) => {
+    if (route.collapse) {
+      return getRoutes(route.collapse);
+    }
+    if (route.route) {
+      return <Route exact path={route.route} element={route.component} key={route.key} />;
+    }
+
+    return null;
+  });
+
+export { routes, publicRoutes, getRoutes };
