@@ -12,10 +12,6 @@
     "type": "git",
     "url": "git+https://github.com/talalnuman1/switchive-admin.git"
   },
-  "engines": {
-    "node": "14 || 15 || 16",
-    "npm": ">=6"
-  },
   "dependencies": {
     "@emotion/cache": "11.7.1",
     "@emotion/react": "11.7.1",
