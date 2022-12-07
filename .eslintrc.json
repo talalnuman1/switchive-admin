@@ -12,7 +12,7 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["react", "prettier"],  
+  "plugins": ["prettier"],  
   "rules": {
     "prettier/prettier": [
       "error",
