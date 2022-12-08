@@ -59,10 +59,10 @@ function Cover() {
         dispatch(setLoginState(true));
         dispatch(setUser(res.data.user));
         setLoadingFalse();
-        message.success("Sign up successfully");
+        messageApi.success("Sign up successfully");
       })
       .catch((error) => {
-        message.error("Failed to Register");
+        messageApi.error("Failed to Register");
         setLoadingFalse();
       });
   };
