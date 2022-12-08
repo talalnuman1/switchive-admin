@@ -4,6 +4,7 @@
     "es2021": true
   },
 
+  
   "extends": ["plugin:react/recommended", "airbnb", "prettier","react-app"],
   "parserOptions": {
     "ecmaFeatures": {
@@ -14,6 +15,7 @@
   },
   "plugins": ["prettier"],  
   "rules": {
+    "no-param-reassign": 0,
     "prettier/prettier": [
       "error",
       {

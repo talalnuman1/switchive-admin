@@ -14,6 +14,7 @@ Coded by www.creative-tim.com
 */
 
 // react-router-dom components
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 // @mui material components
@@ -31,11 +32,53 @@ import CoverLayout from "layouts/authentication/components/CoverLayout";
 
 // Images
 import bgImage from "assets/images/bg-sign-up-cover.jpeg";
+import { message } from "antd";
+
+import { useDispatch } from "react-redux";
+import { setLoginState, setUser } from "../../../redux/user";
+import { register } from "../../../api";
 
 function Cover() {
+  const dispatch = useDispatch();
+
+  const [loading, setloading] = useState(false);
+
+  const setLoadingFalse = () => {
+    setloading(false);
+  };
+
+  const [messageApi, contextHolder] = message.useMessage();
+  const onFinish = (values) => {
+    setloading(true);
+    register({
+      method: "post",
+      data: values,
+    })
+      .then((res) => {
+        localStorage.setItem("token-access", res.data.tokens.access.token);
+        dispatch(setLoginState(true));
+        dispatch(setUser(res.data.user));
+        setLoadingFalse();
+        message.success("Sign up successfully");
+      })
+      .catch((error) => {
+        message.error("Failed to Register");
+        setLoadingFalse();
+      });
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   return (
     <CoverLayout image={bgImage}>
       <Card>
+        {contextHolder}
         <MDBox
           variant="gradient"
           bgColor="info"
@@ -57,13 +100,31 @@ function Cover() {
         <MDBox pt={4} pb={3} px={3}>
           <MDBox component="form" role="form">
             <MDBox mb={2}>
-              <MDInput type="text" label="Name" variant="standard" fullWidth />
+              <MDInput
+                type="text"
+                label="Name"
+                variant="standard"
+                fullWidth
+                onChange={(e) => setName(e.target.value)}
+              />
             </MDBox>
             <MDBox mb={2}>
-              <MDInput type="email" label="Email" variant="standard" fullWidth />
+              <MDInput
+                type="email"
+                label="Email"
+                variant="standard"
+                fullWidth
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </MDBox>
             <MDBox mb={2}>
-              <MDInput type="password" label="Password" variant="standard" fullWidth />
+              <MDInput
+                type="password"
+                label="Password"
+                variant="standard"
+                fullWidth
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </MDBox>
             <MDBox display="flex" alignItems="center" ml={-1}>
               <Checkbox />
@@ -87,8 +148,19 @@ function Cover() {
               </MDTypography>
             </MDBox>
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth>
-                sign in
+              <MDButton
+                variant="gradient"
+                color="info"
+                fullWidth
+                onClick={() =>
+                  onFinish({
+                    name,
+                    email,
+                    password,
+                  })
+                }
+              >
+                sign up
               </MDButton>
             </MDBox>
             <MDBox mt={3} mb={1} textAlign="center">

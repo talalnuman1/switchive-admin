@@ -40,14 +40,57 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
+import { message } from "antd";
+
+import { useDispatch } from "react-redux";
+import { setLoginState, setUser } from "../../../redux/user";
+import { login } from "../../../api";
 
 function Basic() {
+  const dispatch = useDispatch();
+  const [messageApi, contextHolder] = message.useMessage();
+
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
 
+  const [loading, setloading] = useState(false);
+
+  const setLoadingFalse = () => {
+    setloading(false);
+  };
+
+  const onFinish = (values) => {
+    setloading(true);
+    login({
+      method: "post",
+      data: values,
+    })
+      .then((res) => {
+        localStorage.setItem("token-access", res.data.tokens.access.token);
+        dispatch(setLoginState(true));
+        dispatch(setUser(res.data.user));
+        setLoadingFalse();
+        messageApi.success("Login success");
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        messageApi.error("login failed");
+        console.log("CATCH");
+        setLoadingFalse();
+      });
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   return (
     <BasicLayout image={bgImage}>
+      {contextHolder}
       <Card>
         <MDBox
           variant="gradient"
@@ -84,10 +127,20 @@ function Basic() {
         <MDBox pt={4} pb={3} px={3}>
           <MDBox component="form" role="form">
             <MDBox mb={2}>
-              <MDInput type="email" label="Email" fullWidth />
+              <MDInput
+                type="email"
+                label="Email"
+                fullWidth
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </MDBox>
             <MDBox mb={2}>
-              <MDInput type="password" label="Password" fullWidth />
+              <MDInput
+                type="password"
+                label="Password"
+                fullWidth
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </MDBox>
             <MDBox display="flex" alignItems="center" ml={-1}>
               <Switch checked={rememberMe} onChange={handleSetRememberMe} />
@@ -102,7 +155,17 @@ function Basic() {
               </MDTypography>
             </MDBox>
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth>
+              <MDButton
+                variant="gradient"
+                color="info"
+                fullWidth
+                onClick={() =>
+                  onFinish({
+                    email,
+                    password,
+                  })
+                }
+              >
                 sign in
               </MDButton>
             </MDBox>

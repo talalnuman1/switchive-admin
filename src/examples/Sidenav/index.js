@@ -47,6 +47,10 @@ import {
   setWhiteSidenav,
 } from "context";
 
+// Redux actions
+import { useDispatch } from "react-redux";
+import { setLoginState } from "../../redux/user";
+
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav, transparentSidenav, whiteSidenav, darkMode, sidenavColor } = controller;
@@ -62,6 +66,15 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   }
 
   const closeSidenav = () => setMiniSidenav(dispatch, true);
+
+  const dispatchR = useDispatch();
+
+  const signOut = () => {
+    // Deleting the token from the localStorage.
+    localStorage.removeItem("token-access");
+    // Setting the user to null.
+    dispatchR(setLoginState(false));
+  };
 
   useEffect(() => {
     // A function that sets the mini state of the sidenav.
@@ -180,16 +193,8 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       />
       <List>{renderRoutes}</List>
       <MDBox p={2} mt="auto">
-        <MDButton
-          component="a"
-          href="https://www.creative-tim.com/product/material-dashboard-pro-react"
-          target="_blank"
-          rel="noreferrer"
-          variant="gradient"
-          color={sidenavColor}
-          fullWidth
-        >
-          upgrade to pro
+        <MDButton component="a" variant="gradient" color={sidenavColor} fullWidth onClick={signOut}>
+          Sign Out
         </MDButton>
       </MDBox>
     </SidenavRoot>
