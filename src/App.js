@@ -99,14 +99,15 @@ export default function App() {
   }, [pathname]);
 
   const dispatchR = useDispatch();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // const isLoggedIn = true;
 
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   useEffect(() => {
+    // Session
     if (localStorage.getItem("token-access") !== null) {
-      // setLoading(true);
+      setLoading(true);
       const decoded = jwtDecode(localStorage.getItem("token-access"));
       console.log(decoded, "decoded");
       users(`/${decoded.sub}`, {
@@ -157,32 +158,35 @@ export default function App() {
 
   return (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
-      <CssBaseline />
-      {layout === "dashboard" && (
-        <>
-          <Sidenav
-            color={sidenavColor}
-            brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-            brandName="Material Dashboard 2"
-            routes={routes}
-            onMouseEnter={handleOnMouseEnter}
-            onMouseLeave={handleOnMouseLeave}
-          />
-          <Configurator />
-          {configsButton}
-        </>
-      )}
       {loading ? (
         <div>loading...</div>
       ) : (
-        <Routes>
-          {isLoggedIn ? getRoutes(routes) : getRoutes(publicRoutes)}
-          {isLoggedIn ? (
-            <Route path="*" element={<Navigate to="/dashboard" />} />
-          ) : (
-            <Route path="*" element={<Navigate to="/authentication/sign-in" />} />
+        <>
+          <CssBaseline />
+          {layout === "dashboard" && (
+            <>
+              <Sidenav
+                color={sidenavColor}
+                brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
+                brandName="Material Dashboard 2"
+                routes={routes}
+                onMouseEnter={handleOnMouseEnter}
+                onMouseLeave={handleOnMouseLeave}
+              />
+              <Configurator />
+              {configsButton}
+            </>
           )}
-        </Routes>
+
+          <Routes>
+            {isLoggedIn ? getRoutes(routes) : getRoutes(publicRoutes)}
+            {isLoggedIn ? (
+              <Route path="*" element={<Navigate to="/dashboard" />} />
+            ) : (
+              <Route path="*" element={<Navigate to="/authentication/sign-in" />} />
+            )}
+          </Routes>
+        </>
       )}
     </ThemeProvider>
   );
