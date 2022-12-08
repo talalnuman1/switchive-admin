@@ -7,6 +7,10 @@ import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Icon from "@mui/material/Icon";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
+
+import { message } from "antd";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -55,6 +59,8 @@ export default function App() {
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
+
+  const [messageApi, contextHolder] = message.useMessage();
 
   // Cache for the rtl
   useMemo(() => {
@@ -120,11 +126,11 @@ export default function App() {
           console.log(res.data);
           dispatchR(setUser(res.data));
           dispatchR(setLoginState(true));
-          // message.success("login success");
+          messageApi.success("login success");
         })
         .catch((error) => {
-          // message.error(error);
-          console.log(error);
+          messageApi.error(error);
+          // console.log(error);
         })
         .finally(() => {
           setLoading(false);
@@ -161,11 +167,16 @@ export default function App() {
   return (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
       {loading ? (
-        <div>loading...</div>
+        <Box
+          sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "90vh" }}
+        >
+          <CircularProgress />
+        </Box>
       ) : (
         <>
           <CssBaseline />
-          {layout === "dashboard" && (
+          {contextHolder}
+          {isLoggedIn && layout === "dashboard" && (
             <>
               <Sidenav
                 color={sidenavColor}
