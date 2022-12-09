@@ -61,7 +61,9 @@ export default function App() {
   const { pathname } = useLocation();
 
   const [messageApi, contextHolder] = message.useMessage();
-
+  const dispatchR = useDispatch();
+  const [loading, setLoading] = useState(true);
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   // Cache for the rtl
   useMemo(() => {
     const cacheRtl = createCache({
@@ -71,8 +73,6 @@ export default function App() {
 
     setRtlCache(cacheRtl);
   }, []);
-
-  console.log(layout, "layout");
 
   // Open sidenav when mouse enter on mini sidenav
   const handleOnMouseEnter = () => {
@@ -104,22 +104,15 @@ export default function App() {
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
 
-  const dispatchR = useDispatch();
-  const [loading, setLoading] = useState(true);
-
-  // const isLoggedIn = true;
-
-  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   useEffect(() => {
     // Session
-    if (localStorage.getItem("token-access") !== null) {
+    if (sessionStorage.getItem("token-access") !== null) {
       setLoading(true);
-      const decoded = jwtDecode(localStorage.getItem("token-access"));
-      console.log(decoded, "decoded");
+      const decoded = jwtDecode(sessionStorage.getItem("token-access"));
       users(`/${decoded.sub}`, {
         method: "get",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token-access")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("token-access")}`,
         },
       })
         .then((res) => {
@@ -129,8 +122,9 @@ export default function App() {
           messageApi.success("login success");
         })
         .catch((error) => {
-          messageApi.error(error);
-          // console.log(error);
+          messageApi.error(error.response.data.message);
+          console.log(error.response.data.message);
+          console.log(error);
         })
         .finally(() => {
           setLoading(false);
@@ -170,7 +164,7 @@ export default function App() {
         <Box
           sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "90vh" }}
         >
-          <CircularProgress />
+          <CircularProgress color="secondary" />
         </Box>
       ) : (
         <>

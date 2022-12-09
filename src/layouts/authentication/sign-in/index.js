@@ -67,17 +67,17 @@ function Basic() {
       data: values,
     })
       .then((res) => {
-        localStorage.setItem("token-access", res.data.tokens.access.token);
+        sessionStorage.setItem("token-access", res.data.tokens.access.token);
+        // localStorage.setItem("token-access", res.data.tokens.access.token);
         dispatch(setLoginState(true));
         dispatch(setUser(res.data.user));
         setLoadingFalse();
         messageApi.success("Login success");
-        console.log(res.data);
+        // console.log(res.data);
       })
       .catch((error) => {
-        console.log(error);
-        messageApi.error("login failed");
-        console.log("CATCH");
+        // console.log(error.response.data.message);
+        messageApi.error(error.response.data.message);
         setLoadingFalse();
       });
   };
@@ -159,6 +159,7 @@ function Basic() {
                 variant="gradient"
                 color="info"
                 fullWidth
+                loading="true"
                 onClick={() =>
                   onFinish({
                     email,
@@ -166,7 +167,7 @@ function Basic() {
                   })
                 }
               >
-                sign in
+                {loading ? <>loading...</> : <>sign in</>}
               </MDButton>
             </MDBox>
             {/* <MDBox mt={3} mb={1} textAlign="center">

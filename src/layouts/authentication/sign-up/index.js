@@ -36,7 +36,6 @@ import { message } from "antd";
 
 import { useDispatch } from "react-redux";
 import { setLoginState, setUser } from "../../../redux/user";
-import { register } from "../../../api";
 
 function Cover() {
   const dispatch = useDispatch();
@@ -50,21 +49,6 @@ function Cover() {
   const [messageApi, contextHolder] = message.useMessage();
   const onFinish = (values) => {
     setloading(true);
-    register({
-      method: "post",
-      data: values,
-    })
-      .then((res) => {
-        localStorage.setItem("token-access", res.data.tokens.access.token);
-        dispatch(setLoginState(true));
-        dispatch(setUser(res.data.user));
-        setLoadingFalse();
-        messageApi.success("Sign up successfully");
-      })
-      .catch((error) => {
-        messageApi.error("Failed to Register");
-        setLoadingFalse();
-      });
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -94,7 +78,7 @@ function Cover() {
             Join us today
           </MDTypography>
           <MDTypography display="block" variant="button" color="white" my={1}>
-            Enter your email and password to register
+            Enter your email and password to
           </MDTypography>
         </MDBox>
         <MDBox pt={4} pb={3} px={3}>

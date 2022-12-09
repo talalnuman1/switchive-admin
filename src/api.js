@@ -2,14 +2,6 @@ import axios from "axios";
 
 const baseUrl = process.env.REACT_APP_API_URL;
 
-const register = axios.create({
-  baseURL: `${baseUrl}/auth/register`,
-});
-register.interceptors.request.use(
-  (req) => req,
-  (err) => Promise.reject(err)
-);
-
 const login = axios.create({
   baseURL: `${baseUrl}/auth/login`,
 });
@@ -26,4 +18,4 @@ users.interceptors.request.use(
   (err) => Promise.reject(err)
 );
 
-export { register, login, users };
+export { login, users };

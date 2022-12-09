@@ -21,14 +21,6 @@ const publicRoutes = [
     route: "/authentication/sign-in",
     component: <SignIn />,
   },
-  {
-    type: "collapse",
-    name: "Sign Up",
-    key: "sign-up",
-    icon: <Icon fontSize="small">assignment</Icon>,
-    route: "/authentication/sign-up",
-    component: <SignUp />,
-  },
 ];
 
 const routes = [
@@ -42,10 +34,10 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Tables",
-    key: "tables",
+    name: "Users",
+    key: "users",
     icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/tables",
+    route: "/users",
     component: <Tables />,
   },
   {
