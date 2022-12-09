@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const url = "http://localhost:3300/v1";
+const baseUrl = process.env.REACT_APP_API_URL;
 
 const register = axios.create({
-  baseURL: `${url}/auth/register`,
+  baseURL: `${baseUrl}/auth/register`,
 });
 register.interceptors.request.use(
   (req) => req,
@@ -11,7 +11,7 @@ register.interceptors.request.use(
 );
 
 const login = axios.create({
-  baseURL: `${url}/auth/login`,
+  baseURL: `${baseUrl}/auth/login`,
 });
 login.interceptors.request.use(
   (req) => req,
@@ -19,7 +19,7 @@ login.interceptors.request.use(
 );
 
 const users = axios.create({
-  baseURL: `${url}/users`,
+  baseURL: `${baseUrl}/users`,
 });
 users.interceptors.request.use(
   (req) => req,
