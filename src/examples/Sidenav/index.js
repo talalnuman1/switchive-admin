@@ -49,7 +49,7 @@ import {
 
 // Redux actions
 import { useDispatch } from "react-redux";
-import { setLoginState } from "../../redux/user";
+import { setLoginState, setUser } from "../../redux/user";
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [controller, dispatch] = useMaterialUIController();
@@ -71,9 +71,10 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
 
   const signOut = () => {
     // Deleting the token from the localStorage.
-    localStorage.removeItem("token-access");
+    sessionStorage.removeItem("token-access");
     // Setting the user to null.
     dispatchR(setLoginState(false));
+    dispatchR(setUser(null));
   };
 
   useEffect(() => {
