@@ -38,7 +38,7 @@ import projectsTableData from "layouts/tables/data/projectsTableData";
 import DataTable from "react-data-table-component";
 import team2 from "assets/images/team-2.jpg";
 import MDButton from "components/MDButton";
-import { users } from "../../api";
+import { users, cards } from "../../api";
 import { message } from "antd";
 
 function Tables() {
@@ -170,8 +170,31 @@ function Tables() {
       messageApi.error("Please login first");
     }
   };
+  const getCards = () => {
+    setLoading(true);
+    users({
+      method: "get",
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("token-access")}`,
+      },
+    })
+      .then((res) => {
+        console.log(res.data.results);
+        setLoadingFalse();
+        messageApi.success("Switch Hive Cards fetched successfully");
+      })
+      .catch((error) => {
+        messageApi.error(error.response.data.message);
+        setLoadingFalse();
+      })
+      .finally(() => {
+        setLoadingFalse();
+      });
+  };
+
   useEffect(() => {
     getUsers();
+    getCards();
   }, []);
 
   return (

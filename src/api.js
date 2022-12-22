@@ -18,4 +18,12 @@ users.interceptors.request.use(
   (err) => Promise.reject(err)
 );
 
-export { login, users };
+const cards = axios.create({
+  baseURL: `${baseUrl}/cards`,
+});
+users.interceptors.request.use(
+  (req) => req,
+  (err) => Promise.reject(err)
+);
+
+export { login, users, cards };
