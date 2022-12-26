@@ -12,6 +12,7 @@ import SignUp from "layouts/authentication/sign-up";
 // @mui icons
 import Icon from "@mui/material/Icon";
 import { Route } from "react-router-dom";
+import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 
 const publicRoutes = [
   {
@@ -45,7 +46,7 @@ const routes = [
     type: "collapse",
     name: "Gift Card",
     key: "Gift_Card",
-    icon: <Icon fontSize="small">table_view</Icon>,
+    icon:<CardGiftcardIcon/>,
     route: "/giftCard",
     component: <GiftCard />,
   },
