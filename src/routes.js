@@ -6,6 +6,7 @@ import RTL from "layouts/rtl";
 import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
+import GiftCard from "layouts/giftCard/giftCard";
 import SignUp from "layouts/authentication/sign-up";
 
 // @mui icons
@@ -39,6 +40,14 @@ const routes = [
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/users",
     component: <Tables />,
+  },
+  {
+    type: "collapse",
+    name: "Gift Card",
+    key: "Gift_Card",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/giftCard",
+    component: <GiftCard />,
   },
   {
     type: "collapse",
