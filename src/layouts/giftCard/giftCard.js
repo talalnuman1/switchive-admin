@@ -4,14 +4,21 @@ import Card from "@mui/material/Card";
 import Icon from "@mui/material/Icon";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
 import React, { useEffect, useState } from "react";
 import MDButton from "components/MDButton";
 import { cards } from "api";
-import { array, number } from "prop-types";
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography'
+import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
+import DashboardNavbar from "examples/Navbars/DashboardNavbar";
+import Footer from "examples/Footer";
+import { Upload, Select,Modal, Row,Col, Empty } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
+import "./giftCard.css"
 
-import { Button, message, Upload, Select } from "antd";
 const options = [
   {
     value: "USD",
@@ -26,20 +33,33 @@ const options = [
     label: "EUR",
   },
 ];
-export default function index() {
-  const Dragger = Upload.Dragger;
+
+export default function GiftCard() {
   const [name, setName] = useState(null);
   const [currency, setCurrency] = useState(null);
   const [minAmount, setMinAmount] = useState(null);
   const [maxAmount, setMaxAmount] = useState(null);
-  const [avatar, setAvatar] = useState(null);
-
   const [fileList, setFileList] = useState([]);
   const [FileSend, setFileSend] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [data, setdata] = useState([]);
+  const [refresh, setrefresh] = useState(false);
+
 
   const handleChange = (value) => {
-    console.log(`selected ${value}`);
+    console.log(`selected ${value}`)
+    setCurrency(`selected ${value}`)
+    
   };
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   const propsUpload = {
     onRemove: (file) => {
       const index = fileList.indexOf(file);
@@ -86,6 +106,21 @@ export default function index() {
       };
     });
   };
+  const confirm = (id) => {
+    cards(`/${id}`, {
+      method: "delete",
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("token-access")}`,
+      },
+    })
+      .then(function () {
+        setrefresh(!refresh);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   const onsubmit = (values) => {
     cards({
       method: "post",
@@ -108,12 +143,33 @@ export default function index() {
       });
   };
 
+  useEffect(() => {
+    cards({
+      method: "get",
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("token-access")}`,
+      },
+    })
+      .then(function (res) {
+        setdata(res.data.results);
+        console.log(data)
+      })
+      .catch(() => {
+        message.destroy("an error occured ");
+      });
+  }, [refresh]);
+
   return (
-    <Card sx={{ height: "100%", width: "100%", alignItems: "center" }}>
-      <MDTypography variant="h4" fontWeight="medium" mt={2}>
-        Switchive Gift Card
-      </MDTypography>
-      <MDBox pt={3} px={3}>
+    <>
+     <DashboardLayout>
+      <DashboardNavbar />
+    <MDButton className="btn" onClick={showModal}>
+        Create Gift Card
+      </MDButton>
+      <Modal   footer={[]}
+            open={isModalOpen}
+            onCancel={handleCancel}>
+    <div><MDBox pt={3} px={3}>
         <MDBox display="flex" flexWrap="wrap" p={2}>
           <MDInput
             label="Name"
@@ -144,12 +200,13 @@ export default function index() {
         <MDBox display="flex" flexWrap="wrap" p={2}>
           <h5>Select Currency : </h5>
           <Select
+           onChange={handleChange}
             defaultValue="USD"
             style={{
               width: "100%",
               height: "10%",
             }}
-            onChange={handleChange}
+           
             options={options}
           />
         </MDBox>
@@ -158,7 +215,7 @@ export default function index() {
             <h5>Avatar : </h5>
           </MDBox>
 
-          <Upload {...propsUpload}>
+          <Upload {...propsUpload} >
             <Button icon={<UploadOutlined />}>Click to Upload</Button>
           </Upload>
         </MDBox>
@@ -168,7 +225,37 @@ export default function index() {
             Create
           </MDButton>
         </MDBox>
-      </MDBox>
+      </MDBox></div>
+      </Modal>
+      <Row className="overflow" gutter={10}>
+      {data.map((a) => ( 
+      <Col lg={6} md={12} style={{marginBottom:"1rem"}} >
+    <Card >
+      <CardMedia
+        sx={{ height: 140 }}
+        image={a.avatar}
+      />
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+        {a.name}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+      max price : {a.maxAmount}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+      min price : {a.minAmount}
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Button size="small" onClick={() => confirm(a.id) }>delete</Button>
+        <Button size="small">update</Button>
+      </CardActions>
     </Card>
+   </Col>
+  ))}
+    </Row>
+    <Footer/>
+    </DashboardLayout>
+    </>
   );
 }
