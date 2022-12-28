@@ -32,4 +32,11 @@ formulas.interceptors.request.use(
   (req) => req,
   (err) => Promise.reject(err)
 );
-export { login, users, cards, formulas };
+const order = axios.create({
+  baseURL: `${baseUrl}/order`,
+});
+formulas.interceptors.request.use(
+  (req) => req,
+  (err) => Promise.reject(err)
+);
+export { login, users, cards, formulas, order };

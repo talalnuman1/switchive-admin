@@ -159,7 +159,6 @@ export default function GiftCard() {
       .then(function (res) {
         console.log(res.data);
         getCards();
-
       })
       .catch(function (error) {
         console.log(error);
@@ -276,7 +275,7 @@ export default function GiftCard() {
             <MDBox pt={3} px={3}>
               <MDBox display="flex" flexWrap="wrap" p={2}>
                 <MDInput
-                value={name}
+                  value={name}
                   label="Name"
                   onChange={(e) => setName(e.target.value)}
                   style={{
@@ -287,8 +286,7 @@ export default function GiftCard() {
 
               <MDBox display="flex" flexWrap="wrap" p={2}>
                 <MDInput
-                                value={minAmount}
-
+                  value={minAmount}
                   label="Min Amount"
                   onChange={(e) => setMinAmount(e.target.value)}
                   style={{
@@ -297,8 +295,7 @@ export default function GiftCard() {
                   }}
                 />
                 <MDInput
-                                value={maxAmount}
-
+                  value={maxAmount}
                   label="Max Amount"
                   onChange={(e) => setMaxAmount(e.target.value)}
                   style={{
@@ -308,8 +305,7 @@ export default function GiftCard() {
               </MDBox>
               <MDBox display="flex" flexWrap="wrap" p={2}>
                 <Select
-                                value={currency}
-
+                  value={currency}
                   className="select"
                   showSearch
                   placeholder="Select a Currency"
