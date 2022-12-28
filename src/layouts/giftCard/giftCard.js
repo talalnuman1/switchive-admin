@@ -43,7 +43,7 @@ export default function GiftCard() {
   const [minAmount, setMinAmount] = useState(null);
   const [maxAmount, setMaxAmount] = useState(null);
   const [getID, setgetID] = useState("");
-  const [url, setUrl] = useState(null);
+  const [url, setUrl] = useState("");
   const [modal2, setmodal2] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setdata] = useState([]);
@@ -93,6 +93,8 @@ export default function GiftCard() {
     setCurrency(item.currency);
     setMinAmount(item.minAmount);
     setMaxAmount(item.maxAmount);
+    setUrl(item.avatar);
+    console.log(item.avatar);
     setmodal2(true);
   };
 
@@ -135,6 +137,7 @@ export default function GiftCard() {
       .then(function (res) {
         console.log(res.data);
         getCards();
+        handleCancel2();
       })
       .catch(function (error) {
         console.log(error);
@@ -159,9 +162,17 @@ export default function GiftCard() {
       .then(function (res) {
         console.log(res.data);
         getCards();
+        handleCancel();
+        setgetID("");
+        setName("");
+        setCurrency("");
+        setMinAmount("");
+        setMaxAmount("");
+        setUrl("");
       })
       .catch(function (error) {
         console.log(error);
+        handleCancel();
       });
   };
   const getCards = () => {
@@ -196,6 +207,7 @@ export default function GiftCard() {
               <MDBox display="flex" flexWrap="wrap" p={2}>
                 <MDInput
                   label="Name"
+                  value={name}
                   onChange={(e) => setName(e.target.value)}
                   style={{
                     width: "100%",
@@ -206,6 +218,7 @@ export default function GiftCard() {
               <MDBox display="flex" flexWrap="wrap" p={2}>
                 <MDInput
                   label="Min Amount"
+                  value={minAmount}
                   onChange={(e) => setMinAmount(e.target.value)}
                   style={{
                     width: "47%",
@@ -214,6 +227,7 @@ export default function GiftCard() {
                 />
                 <MDInput
                   label="Max Amount"
+                  value={maxAmount}
                   onChange={(e) => setMaxAmount(e.target.value)}
                   style={{
                     width: "47%",
@@ -222,6 +236,7 @@ export default function GiftCard() {
               </MDBox>
               <MDBox display="flex" flexWrap="wrap" p={2}>
                 <Select
+                  value={currency}
                   className="select"
                   showSearch
                   placeholder="Select a Currency"
