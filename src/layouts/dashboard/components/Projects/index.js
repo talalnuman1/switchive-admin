@@ -23,13 +23,14 @@ import MenuItem from "@mui/material/MenuItem";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
+import MDButton from "components/MDButton";
+import MDInput from "components/MDInput";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
-import { Row, Typography, Col, Button } from "antd";
+import { Row, Typography, Col, Button, Modal } from "antd";
 // Material Dashboard 2 React examples
 import DataTable from "examples/Tables/DataTable";
-
 // Data
 import data from "layouts/dashboard/components/Projects/data";
 import { formulas } from "api";
@@ -37,9 +38,23 @@ import { formulas } from "api";
 function Projects() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+  const [modal2, setmodal2] = useState(false);
+  const [value, setvalue] = useState([]);
+  const [getID, setgetID] = useState("");
+
   const setLoadingFalse = () => {
     setLoading(false);
   };
+
+  const handleCancel2 = () => {
+    setmodal2(false);
+  };
+
+  const showModal2 = (item) => {
+    setgetID(item.id);
+    setmodal2(true);
+  };
+
   // const { columns, rows } = data();
   const [menu, setMenu] = useState(null);
 
@@ -87,6 +102,26 @@ function Projects() {
         setLoadingFalse();
       });
   };
+  const onUpdate = (id) => {
+    formulas(`/${id}`, {
+      method: "patch",
+      data: {
+        value: value,
+      },
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("token-access")}`,
+      },
+    })
+      .then(function (res) {
+        console.log(res.data);
+        getFormulas();
+        handleCancel2();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
     getFormulas();
   }, []);
@@ -104,20 +139,17 @@ function Projects() {
       ) : (
         <Row className="overflow" gutter={10}>
           {data.map((a) => (
-            <Col lg={6} md={12} xs={24} style={{ marginBottom: "1rem" }}>
+            <Col lg={8} md={24} xs={24} style={{ marginBottom: "1rem", marginTop: "2rem" }}>
               <Card>
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
                     Key : {a.key}
                   </Typography>
-                  <Typography gutterBottom variant="body2" color="text.secondary" component="div">
+                  <Typography variant="body2" color="text.secondary" component="div">
                     value : {a.value}
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button size="small" onClick={() => confirm(a.id)}>
-                    delete
-                  </Button>
                   <Button size="small" onClick={() => showModal2(a)}>
                     update
                   </Button>
@@ -127,6 +159,26 @@ function Projects() {
           ))}
         </Row>
       )}
+      <Modal footer={[]} open={modal2} onCancel={handleCancel2}>
+        <div>
+          <MDBox pt={3} px={3}>
+            <MDBox display="flex" flexWrap="wrap" p={2}>
+              <MDInput
+                label="value"
+                onChange={(e) => setvalue(e.target.value)}
+                style={{
+                  width: "100%",
+                }}
+              />
+            </MDBox>
+            <MDBox p={2} mt="auto">
+              <MDButton variant="contained" color="info" fullWidth onClick={() => onUpdate(getID)}>
+                update
+              </MDButton>
+            </MDBox>
+          </MDBox>
+        </div>
+      </Modal>
     </Card>
   );
 }
