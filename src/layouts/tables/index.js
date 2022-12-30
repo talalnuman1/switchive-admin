@@ -243,7 +243,7 @@ function Tables() {
                 </MDBox>
 
                 <MDBox pt={3}>
-                  <DataTable columns={columns} data={usersData} />
+                  <DataTable columns={columns} data={usersData}  />
                 </MDBox>
               </Card>
               <Pagination

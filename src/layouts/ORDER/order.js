@@ -13,6 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 import React, { useEffect, useState } from "react";
+import "./orderstyle.css";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -37,7 +38,7 @@ import DataTable from "react-data-table-component";
 import team2 from "assets/images/team-2.jpg";
 import MDButton from "components/MDButton";
 import { order } from "../../api";
-import { message, Popconfirm, Pagination } from "antd";
+import { message, Popconfirm, Pagination, Modal, Descriptions } from "antd";
 
 function Order() {
   const [usersData, setUsersData] = useState([]);
@@ -45,6 +46,8 @@ function Order() {
   const [limit, setlimit] = useState(10);
   const [total, settotal] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [modal2, setmodal2] = useState(false);
+  const [Mdata, setMdata] = useState([]);
 
   const onShowSizeChange = (current, pageSize) => {
     setpage(current);
@@ -53,6 +56,15 @@ function Order() {
   const cancel = (e) => {
     console.log(e);
     message.error("user not deleted");
+  };
+
+  const showModal2 = (item) => {
+    setMdata(item);
+    setmodal2(true);
+  };
+
+  const handleCancel2 = () => {
+    setmodal2(false);
   };
 
   const columns = [
@@ -110,17 +122,14 @@ function Order() {
           <MDBox display="flex" alignItems="center" lineHeight={1}>
             <MDBox lineHeight={1} display="flex" px={1}>
               <MDBox ml={1}>
-                <Popconfirm
-                  title="Are you sure to delete this user?"
-                  onConfirm={() => deleteUser(row.id)}
-                  onCancel={cancel}
-                  okText="Yes"
-                  cancelText="No"
+                <MDButton
+                  onClick={() => showModal2(row)}
+                  size="small"
+                  color="error"
+                  variant="outlined"
                 >
-                  <MDButton size="small" color="error" variant="outlined">
-                    Delete
-                  </MDButton>
-                </Popconfirm>
+                  Detail
+                </MDButton>
               </MDBox>
             </MDBox>
           </MDBox>
@@ -140,16 +149,20 @@ function Order() {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("token-access")}`,
         },
+        params: {
+          page: page,
+          limit: limit,
+        },
       })
         .then((res) => {
           setUsersData([...res.data.results]);
           console.log(res.data.results);
           settotal(res.data.totalResults);
           setLoadingFalse();
-          message.success("Users fetched successfully");
+          message.success("orders fetched successfully");
         })
         .catch((error) => {
-        //   message.error(error.res.data.message);
+          //   message.error(error.res.data.message);
           setLoadingFalse();
         });
     } else {
@@ -202,6 +215,18 @@ function Order() {
           </Grid>
         )}
       </MDBox>
+      <Modal className="model" footer={[]} open={modal2} onCancel={handleCancel2}>
+        <div>
+          <Descriptions title="Responsive Descriptions" bordered size={"small"}>
+            <Descriptions.Item label="amount">{Mdata.amount} </Descriptions.Item>
+            <Descriptions.Item label="Transaction Id">{Mdata.transactionId}</Descriptions.Item>
+            <Descriptions.Item label="order Email">{Mdata.orderEmail}</Descriptions.Item>
+            <Descriptions.Item label="country">country</Descriptions.Item>
+            <Descriptions.Item label="paid By">{Mdata.paidBy}</Descriptions.Item>
+            <Descriptions.Item label="Product">Data disk type: MongoDB</Descriptions.Item>
+          </Descriptions>
+        </div>
+      </Modal>
     </DashboardLayout>
   );
 }
