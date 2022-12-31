@@ -29,6 +29,8 @@
     "chart.js": "3.4.1",
     "chroma-js": "2.4.2",
     "draft-js": "^0.11.7",
+    "draftjs-to-html": "^0.9.1",
+    "firebase": "^9.15.0",
     "jwt-decode": "^3.1.2",
     "prop-types": "15.8.1",
     "react": "17.0.2",

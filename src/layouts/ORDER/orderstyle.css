@@ -1,0 +1,9 @@
+.model{
+    width: 70rem !important;
+    
+}
+@media only screen and (max-width: 1440px) {
+    .model{
+        width: 50rem !important;
+    } 
+}

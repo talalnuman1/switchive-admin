@@ -9,12 +9,12 @@ import SignIn from "layouts/authentication/sign-in";
 import GiftCard from "layouts/giftCard/giftCard";
 import CreateBlog from "layouts/createBlog";
 import SignUp from "layouts/authentication/sign-up";
-
+import Order from "layouts/ORDER/order";
 // @mui icons
 import Icon from "@mui/material/Icon";
 import { Route } from "react-router-dom";
 import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
-import { CreateNewFolder } from "@mui/icons-material";
+import ViewListIcon from "@mui/icons-material/ViewList";
 
 const publicRoutes = [
   {
@@ -55,43 +55,51 @@ const routes = [
   {
     type: "collapse",
     name: "Create Blog",
-    key: "Create_Blog",
+    key: "Create Blog",
     icon: <CardGiftcardIcon />,
-    route: "create_blog",
+    route: "createBlog",
     component: <CreateBlog />,
   },
   {
     type: "collapse",
-    name: "Billing",
-    key: "billing",
-    icon: <Icon fontSize="small">receipt_long</Icon>,
-    route: "/billing",
-    component: <Billing />,
+    name: "order",
+    key: "order",
+    icon: <ViewListIcon />,
+    route: "/Order",
+    component: <Order />,
   },
-  {
-    type: "collapse",
-    name: "RTL",
-    key: "rtl",
-    icon: <Icon fontSize="small">format_textdirection_r_to_l</Icon>,
-    route: "/rtl",
-    component: <RTL />,
-  },
-  {
-    type: "collapse",
-    name: "Notifications",
-    key: "notifications",
-    icon: <Icon fontSize="small">notifications</Icon>,
-    route: "/notifications",
-    component: <Notifications />,
-  },
-  {
-    type: "collapse",
-    name: "Profile",
-    key: "profile",
-    icon: <Icon fontSize="small">person</Icon>,
-    route: "/profile",
-    component: <Profile />,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Billing",
+  //   key: "billing",
+  //   icon: <Icon fontSize="small">receipt_long</Icon>,
+  //   route: "/billing",
+  //   component: <Billing />,
+  // },
+  // {
+  //   type: "collapse",
+  //   name: "RTL",
+  //   key: "rtl",
+  //   icon: <Icon fontSize="small">format_textdirection_r_to_l</Icon>,
+  //   route: "/rtl",
+  //   component: <RTL />,
+  // },
+  // {
+  //   type: "collapse",
+  //   name: "Notifications",
+  //   key: "notifications",
+  //   icon: <Icon fontSize="small">notifications</Icon>,
+  //   route: "/notifications",
+  //   component: <Notifications />,
+  // },
+  // {
+  //   type: "collapse",
+  //   name: "Profile",
+  //   key: "profile",
+  //   icon: <Icon fontSize="small">person</Icon>,
+  //   route: "/profile",
+  //   component: <Profile />,
+  // },
 ];
 
 const getRoutes = (allRoutes) =>

@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 import React, { useEffect, useState } from "react";
-import "./styleuser.css"
+import "./orderstyle.css";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -24,7 +24,7 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDBadge from "components/MDBadge";
 import MDAvatar from "components/MDAvatar";
-
+import Footer from "examples/Footer";
 // Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
@@ -37,63 +37,76 @@ import projectsTableData from "layouts/tables/data/projectsTableData";
 import DataTable from "react-data-table-component";
 import team2 from "assets/images/team-2.jpg";
 import MDButton from "components/MDButton";
-import { users, cards } from "../../api";
-import { message, Popconfirm, Pagination } from "antd";
+import { order } from "../../api";
+import { message, Popconfirm, Pagination, Modal, Descriptions } from "antd";
 
-function Tables() {
+function Order() {
   const [usersData, setUsersData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [messageApi, contextHolder] = message.useMessage();
   const [page, setpage] = useState(1);
   const [limit, setlimit] = useState(10);
   const [total, settotal] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [modal2, setmodal2] = useState(false);
+  const [Mdata, setMdata] = useState([]);
 
-  const cancel = (e) => {
-    console.log(e);
-    message.error("user not deleted");
-  };
   const onShowSizeChange = (current, pageSize) => {
     setpage(current);
     setlimit(pageSize);
   };
+  const cancel = (e) => {
+    console.log(e);
+    message.error("user not deleted");
+  };
+
+  const showModal2 = (item) => {
+    setMdata(item);
+    setmodal2(true);
+  };
+
+  const handleCancel2 = () => {
+    setmodal2(false);
+  };
 
   const columns = [
     {
-      name: "User",
+      name: "Created By",
       selector: (row) => {
         return (
           <MDBox display="flex" alignItems="center" lineHeight={1}>
-            <MDAvatar src={team2} name={row.name} size="sm" />
             <MDBox ml={2} lineHeight={1}>
               <MDTypography display="block" variant="button" fontWeight="medium">
-                {row.name}
+                {row.createdBy}
               </MDTypography>
-              <MDTypography variant="caption">{row.email}</MDTypography>
             </MDBox>
           </MDBox>
         );
       },
       width: "15rem",
     },
+    // {
+    //   name: "Product",
+    //   selector: (row) => row.products,
+    // },
+
     {
-      name: "Email",
-      selector: (row) => row.email,
+      name: "amount",
+      selector: (row) => row.amount,
     },
     {
-      name: "status",
-      selector: (row) => {
-        let content = row.isEmailVerified ? "Verified" : "Not Verified";
-        let color = row.isEmailVerified ? "success" : "warning";
-        return (
-          <MDBox ml={-1}>
-            <MDBadge ml={-1} badgeContent={content} color={color} variant="gradient" size="sm" />
-          </MDBox>
-        );
-      },
+      name: "Transaction Id",
+      selector: (row) => row.transactionId,
     },
     {
-      name: "Joined",
-      selector: (row) => row.joined,
+      name: "order Email",
+      selector: (row) => row.orderEmail,
+    },
+    {
+      name: "country",
+      selector: (row) => row.country.name,
+    },
+    {
+      name: "paid By",
+      selector: (row) => row.paidBy,
     },
     {
       name: "Actions",
@@ -109,17 +122,14 @@ function Tables() {
           <MDBox display="flex" alignItems="center" lineHeight={1}>
             <MDBox lineHeight={1} display="flex" px={1}>
               <MDBox ml={1}>
-                <Popconfirm
-                  title="Are you sure to delete this user?"
-                  onConfirm={() => deleteUser(row.id)}
-                  onCancel={cancel}
-                  okText="Yes"
-                  cancelText="No"
+                <MDButton
+                  onClick={() => showModal2(row)}
+                  size="small"
+                  color="error"
+                  variant="outlined"
                 >
-                  <MDButton size="small" color="error" variant="outlined">
-                    Delete
-                  </MDButton>
-                </Popconfirm>
+                  Detail
+                </MDButton>
               </MDBox>
             </MDBox>
           </MDBox>
@@ -130,18 +140,16 @@ function Tables() {
   const setLoadingFalse = () => {
     setLoading(false);
   };
-
-  const getUsers = () => {
+  const getOrders = () => {
     setLoading(true);
     if (sessionStorage.getItem("token-access") !== null) {
       setLoading(true);
-      users({
+      order({
         method: "get",
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("token-access")}`,
         },
         params: {
-          role: "user",
           page: page,
           limit: limit,
         },
@@ -151,72 +159,22 @@ function Tables() {
           console.log(res.data.results);
           settotal(res.data.totalResults);
           setLoadingFalse();
-          messageApi.success("Users fetched successfully");
+          message.success("orders fetched successfully");
         })
         .catch((error) => {
-          messageApi.error(error.response.data.message);
+          //   message.error(error.res.data.message);
           setLoadingFalse();
         });
     } else {
       setLoadingFalse();
-      messageApi.error("Please login first");
+      message.error("Please login first");
     }
   };
-  const deleteUser = (id) => {
-    setLoading(true);
-    if (sessionStorage.getItem("token-access") !== null) {
-      setLoading(true);
-      users({
-        method: "delete",
-        url: `/${id}`,
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("token-access")}`,
-        },
-      })
-        .then((res) => {
-          console.log(res);
-          messageApi.success("User deleted successfully");
-          getUsers();
-        })
-        .catch((error) => {
-          messageApi.error(error.response.data.message);
-          setLoadingFalse();
-        });
-    } else {
-      setLoadingFalse();
-      messageApi.error("Please login first");
-    }
-  };
-  const getCards = () => {
-    setLoading(true);
-    users({
-      method: "get",
-      headers: {
-        Authorization: `Bearer ${sessionStorage.getItem("token-access")}`,
-      },
-    })
-      .then((res) => {
-        console.log(res.data.results);
-        setLoadingFalse();
-        messageApi.success("Switch Hive Cards fetched successfully");
-      })
-      .catch((error) => {
-        messageApi.error(error.response.data.message);
-        setLoadingFalse();
-      })
-      .finally(() => {
-        setLoadingFalse();
-      });
-  };
-
   useEffect(() => {
-    getUsers();
-    getCards();
+    getOrders();
   }, [limit, page]);
-
   return (
     <DashboardLayout>
-      {contextHolder}
       <DashboardNavbar />
       <MDBox pt={6} pb={3}>
         {loading ? (
@@ -238,12 +196,11 @@ function Tables() {
                   coloredShadow="info"
                 >
                   <MDTypography variant="h6" color="white">
-                    Users Table
+                    Order
                   </MDTypography>
                 </MDBox>
-
                 <MDBox pt={3}>
-                  <DataTable columns={columns} data={usersData}  />
+                  <DataTable columns={columns} data={usersData} />
                 </MDBox>
               </Card>
               <Pagination
@@ -255,39 +212,23 @@ function Tables() {
                 total={total}
               />
             </Grid>
-
-            {/* <Grid item xs={12}>
-            <Card>
-              <MDBox
-                mx={2}
-                mt={-3}
-                py={3}
-                px={2}
-                variant="gradient"
-                bgColor="info"
-                borderRadius="lg"
-                coloredShadow="info"
-              >
-                <MDTypography variant="h6" color="white">
-                  Projects Table
-                </MDTypography>
-              </MDBox>
-              <MDBox pt={3}>
-                <DataTable
-                  table={{ columns: pColumns, rows: pRows }}
-                  isSorted={false}
-                  entriesPerPage={false}
-                  showTotalEntries={false}
-                  noEndBorder
-                />
-              </MDBox>
-            </Card>
-          </Grid> */}
           </Grid>
         )}
       </MDBox>
+      <Modal className="model" footer={[]} open={modal2} onCancel={handleCancel2}>
+        <div>
+          <Descriptions title="Responsive Descriptions" bordered size={"small"}>
+            <Descriptions.Item label="amount">{Mdata.amount} </Descriptions.Item>
+            <Descriptions.Item label="Transaction Id">{Mdata.transactionId}</Descriptions.Item>
+            <Descriptions.Item label="order Email">{Mdata.orderEmail}</Descriptions.Item>
+            <Descriptions.Item label="country">country</Descriptions.Item>
+            <Descriptions.Item label="paid By">{Mdata.paidBy}</Descriptions.Item>
+            <Descriptions.Item label="Product">Data disk type: MongoDB</Descriptions.Item>
+          </Descriptions>
+        </div>
+      </Modal>
     </DashboardLayout>
   );
 }
 
-export default Tables;
+export default Order;
