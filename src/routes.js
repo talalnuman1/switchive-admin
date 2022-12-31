@@ -7,12 +7,14 @@ import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import GiftCard from "layouts/giftCard/giftCard";
+import CreateBlog from "layouts/createBlog";
 import SignUp from "layouts/authentication/sign-up";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
 import { Route } from "react-router-dom";
-import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
+import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
+import { CreateNewFolder } from "@mui/icons-material";
 
 const publicRoutes = [
   {
@@ -46,9 +48,17 @@ const routes = [
     type: "collapse",
     name: "Gift Card",
     key: "Gift_Card",
-    icon:<CardGiftcardIcon/>,
+    icon: <CardGiftcardIcon />,
     route: "/giftCard",
     component: <GiftCard />,
+  },
+  {
+    type: "collapse",
+    name: "Create Blog",
+    key: "Create_Blog",
+    icon: <CardGiftcardIcon />,
+    route: "create_blog",
+    component: <CreateBlog />,
   },
   {
     type: "collapse",
