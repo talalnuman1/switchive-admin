@@ -5,3 +5,38 @@
     padding: 1rem 0.5rem 0.5rem;
 
 }
+
+.img-upload {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+    padding: 70px 10px;
+    border: 1px solid rgba(147, 147, 147, 0.507);
+    margin-left: 10px;
+    border-radius: 10px;
+}
+
+.img-upload img {
+    width: 250px;
+    margin-top: 10px;
+}
+
+.img-upload button {
+    border: none;
+    background-color: #5bc0de;
+    color: white;
+    margin-top: 20px;
+    border-radius: 5px;
+
+}
+
+.img-upload input {
+    margin-top: 20px;
+    background-color: green;
+    /* display: none; */
+}
+
+.img-upload h5 {
+    margin-top: -50px;
+}

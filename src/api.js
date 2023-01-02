@@ -35,8 +35,16 @@ formulas.interceptors.request.use(
 const order = axios.create({
   baseURL: `${baseUrl}/order`,
 });
-formulas.interceptors.request.use(
+order.interceptors.request.use(
   (req) => req,
   (err) => Promise.reject(err)
 );
-export { login, users, cards, formulas, order };
+const blogs = axios.create({
+  baseURL: `${baseUrl}/blog`,
+});
+blogs.interceptors.request.use(
+  (req) => req,
+  (err) => Promise.reject(err)
+);
+
+export { login, users, cards, formulas, order, blogs };

@@ -15,6 +15,7 @@ import Icon from "@mui/material/Icon";
 import { Route } from "react-router-dom";
 import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 import ViewListIcon from "@mui/icons-material/ViewList";
+import Blog from "layouts/blogs";
 
 const publicRoutes = [
   {
@@ -54,10 +55,18 @@ const routes = [
   },
   {
     type: "collapse",
+    name: "Blog",
+    key: "Blog",
+    icon: <CardGiftcardIcon />,
+    route: "/blog",
+    component: <Blog />,
+  },
+  {
+    type: "screen",
     name: "Create Blog",
     key: "Create Blog",
     icon: <CardGiftcardIcon />,
-    route: "createBlog",
+    route: "/createBlog",
     component: <CreateBlog />,
   },
   {
