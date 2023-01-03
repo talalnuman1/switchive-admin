@@ -173,7 +173,15 @@ export default function Blog() {
       });
   };
   const getFirebaseData = (url) => {
-    // const httpsReference = ref(storage, url);
+    let data = "";
+    fetch(url).then((response) => {
+      response.text().then(function (text) {
+        // done();
+        data = text;
+        console.log(text);
+      });
+    });
+    return data;
     // console.log(httpsReference);
     // const xhr = new XMLHttpRequest();
     // xhr.responseType = "blob";
@@ -182,15 +190,15 @@ export default function Blog() {
     // };
     // xhr.open("GET", url);
     // xhr.send();
-    fetch(`${url}`, {
-      mode: "no-cors",
-    })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // fetch(`${url}`, {
+    //   mode: "no-cors",
+    // })
+    //   .then((response) => {
+    //     console.log(response);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   };
 
   const showFile = async (url) => {
@@ -235,7 +243,19 @@ export default function Blog() {
                   <Button size="small" onClick={() => confirm(a.id)}>
                     delete
                   </Button>
-                  <Button size="small" onClick={() => showModal2(a)}>
+                  <Button
+                    size="small"
+                    onClick={() =>
+                      navigate("/updateBlog", {
+                        state: {
+                          blogId: a.id,
+                          blogTitle: a.title,
+                          blogBody: a.blogUrl,
+                          image: a.imageUrl,
+                        },
+                      })
+                    }
+                  >
                     update
                   </Button>
                 </CardActions>
