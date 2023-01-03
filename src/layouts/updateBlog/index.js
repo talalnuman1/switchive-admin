@@ -31,7 +31,7 @@ export default function updateBlog() {
   const { blogId, blogTitle, blogBody, image } = state;
   const [title, setTitle] = useState(blogTitle ? blogTitle : "");
   const [imageUrl, setImageUrl] = useState(image ? image : "");
-  const [blogUrl, setBlogUrl] = useState("");
+  const [blogUrl, setBlogUrl] = useState(blogBody ? blogBody : "");
   const [selectedImage, setSelectedImage] = useState("");
   const [uploadPercentage, setUploadPercentage] = useState(0);
   const [imageLoading, setImageLoading] = useState(false);
@@ -214,19 +214,11 @@ export default function updateBlog() {
           <MDInput type="file" onChange={handlePdfChange} />
         </MDBox>
         <MDBox p={2} mr={5} display={"flex"} style={{ justifyContent: "flex-end" }}>
-          {imageLoading ? (
-            <MDButton variant="contained" color="info">
-              Loading...
-            </MDButton>
-          ) : (
-            title !== "" &&
-            imageUrl !== "" &&
-            blogUrl !== "" && (
-              <MDButton variant="contained" color="info" onClick={toTextFile}>
-                Update
-              </MDButton>
-            )
-          )}
+          <MDButton variant="contained" color="info" onClick={!imageLoading && toTextFile}>
+            {imageLoading
+              ? "Loading..."
+              : title !== "" && imageUrl !== "" && blogUrl !== "" && "Update"}
+          </MDButton>
         </MDBox>
       </DashboardLayout>
     </>

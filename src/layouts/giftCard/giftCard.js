@@ -266,22 +266,16 @@ export default function GiftCard() {
                 <Input type="file" onChange={handlePdfChange} />
               </MDBox>
               <MDBox p={2} mt="auto">
-                {imageLoading ? (
-                  <MDButton variant="contained" color="info" fullWidth>
-                    Loading...
+                {
+                  <MDButton
+                    variant="contained"
+                    color="info"
+                    fullWidth
+                    onClick={imageLoading ? () => console.log("Wait") : onsubmit}
+                  >
+                    {imageLoading ? "Creating..." : "Create"}
                   </MDButton>
-                ) : (
-                  url !== "" && (
-                    <MDButton
-                      variant="contained"
-                      color="info"
-                      fullWidth
-                      onClick={onsubmit}
-                    >
-                      Create
-                    </MDButton>
-                  )
-                )}
+                }
               </MDBox>
             </MDBox>
           </div>
