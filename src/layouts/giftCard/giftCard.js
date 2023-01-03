@@ -15,8 +15,7 @@ import Typography from "@mui/material/Typography";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
-import { Upload, Select, Modal, Row, Col, Input, Progress } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { Upload, Select, Modal, Row, Col, Input, Progress, Popconfirm, message } from "antd";
 import "./giftCard.css";
 import { Storage } from "../../firebase";
 import { uploadBytes, ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
@@ -48,11 +47,17 @@ export default function GiftCard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setdata] = useState([]);
   const [refresh, setrefresh] = useState(false);
+  const [imageLoading, setimageLoading] = useState(false);
+
+  const cancel = (e) => {
+    message.error("card not deleted");
+  };
 
   const date = new Date();
   const showTime = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
 
   const handlePdfChange = (e) => {
+    setimageLoading(true);
     let values = e.target.files[0];
     if (e.target.files[0]) {
     }
@@ -71,6 +76,9 @@ export default function GiftCard() {
       })
       .catch((error) => {
         console.log(error.message);
+      })
+      .finally(() => {
+        setimageLoading(false);
       });
     uploadTask.on("state_changed", (snapshot) => {
       const percent = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
@@ -86,6 +94,14 @@ export default function GiftCard() {
 
   const showModal = () => {
     setIsModalOpen(true);
+  };
+  const condition = () => {
+    console.log(disable);
+    if (url.length === 0) {
+      return true;
+    } else {
+      return false;
+    }
   };
   const showModal2 = (item) => {
     setgetID(item.id);
@@ -250,9 +266,22 @@ export default function GiftCard() {
                 <Input type="file" onChange={handlePdfChange} />
               </MDBox>
               <MDBox p={2} mt="auto">
-                <MDButton variant="contained" color="info" fullWidth onClick={onsubmit}>
-                  Create
-                </MDButton>
+                {imageLoading ? (
+                  <MDButton variant="contained" color="info" fullWidth>
+                    Loading...
+                  </MDButton>
+                ) : (
+                  url !== "" && (
+                    <MDButton
+                      variant="contained"
+                      color="info"
+                      fullWidth
+                      onClick={onsubmit}
+                    >
+                      Create
+                    </MDButton>
+                  )
+                )}
               </MDBox>
             </MDBox>
           </div>
@@ -274,9 +303,17 @@ export default function GiftCard() {
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button size="small" onClick={() => confirm(a.id)}>
-                    delete
-                  </Button>
+                  <Popconfirm
+                    title="Are you sure to delete this card?"
+                    onConfirm={() => confirm(a.id)}
+                    onCancel={cancel}
+                    okText="Yes"
+                    cancelText="No"
+                    placement="topLeft"
+                  >
+                    <Button size="small">delete</Button>
+                  </Popconfirm>
+
                   <Button size="small" onClick={() => showModal2(a)}>
                     update
                   </Button>
