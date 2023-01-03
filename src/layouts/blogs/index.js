@@ -15,7 +15,7 @@ import Typography from "@mui/material/Typography";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
-import { Upload, Select, Modal, Row, Col, Input, Progress } from "antd";
+import { Upload, Select, Modal, Row, Col, Input, Progress, Popconfirm, message } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 // import "./giftCard.css";
 import { Storage } from "../../firebase";
@@ -60,6 +60,10 @@ export default function Blog() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setdata] = useState([]);
   const [refresh, setrefresh] = useState(false);
+
+  const cancel = (e) => {
+    message.error("card not deleted");
+  };
 
   const date = new Date();
   const showTime = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
@@ -240,9 +244,18 @@ export default function Blog() {
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button size="small" onClick={() => confirm(a.id)}>
-                    delete
-                  </Button>
+                  <Popconfirm
+                    title="Are you sure to delete this card?"
+                    onConfirm={() => confirm(a.id)}
+                    onCancel={cancel}
+                    okText="Yes"
+                    cancelText="No"
+                    placement="topLeft"
+                  >
+                    <Button size="small">delete</Button>
+                  </Popconfirm>
+
+            
                   <Button
                     size="small"
                     onClick={() =>
