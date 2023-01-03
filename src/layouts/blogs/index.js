@@ -236,7 +236,7 @@ export default function Blog() {
                   </Typography>
                 </CardContent>
                 <CardActions>
-                <Popconfirm
+                  <Popconfirm
                     title="Are you sure to delete this card?"
                     onConfirm={() => confirm(a.id)}
                     onCancel={cancel}
@@ -244,9 +244,7 @@ export default function Blog() {
                     cancelText="No"
                     placement="topLeft"
                   >
-                  <Button size="small" >
-                    delete
-                  </Button>
+                    <Button size="small">delete</Button>
                   </Popconfirm>
 
                   <Button size="small" onClick={() => showModal2(a)}>
