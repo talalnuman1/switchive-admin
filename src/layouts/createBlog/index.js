@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Typography from "@mui/material/Typography";
+import {v4} from "uuid";
 
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
@@ -39,6 +40,7 @@ export default function CreateBlog() {
       draftToHtml(convertToRaw(editorState.getCurrentContent())).match(/(\w+)/g).length - 2
     );
   };
+
   //   const uploadImage = async () => {
   //     console.log("fghj");
   //     const formData = new FormData();
@@ -68,7 +70,7 @@ export default function CreateBlog() {
   const sentToFirebase = (e) => {
     let values = e;
 
-    const blogDoc = ref(Storage, `blogs/${title + showTime}`);
+    const blogDoc = ref(Storage, `blogs/${v4()}`);
     const uploadTask = uploadBytesResumable(blogDoc, values);
     uploadBytes(blogDoc, values)
       .then(() => {

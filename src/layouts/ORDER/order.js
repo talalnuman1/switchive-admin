@@ -59,6 +59,7 @@ function Order() {
   };
 
   const showModal2 = (item) => {
+    console.log(item.country.name);
     setMdata(item);
     setmodal2(true);
   };
@@ -217,13 +218,24 @@ function Order() {
       </MDBox>
       <Modal className="model" footer={[]} open={modal2} onCancel={handleCancel2}>
         <div>
-          <Descriptions title="Responsive Descriptions" bordered size={"small"}>
-            <Descriptions.Item label="amount">{Mdata.amount} </Descriptions.Item>
-            <Descriptions.Item label="Transaction Id">{Mdata.transactionId}</Descriptions.Item>
-            <Descriptions.Item label="order Email">{Mdata.orderEmail}</Descriptions.Item>
-            <Descriptions.Item label="country">country</Descriptions.Item>
-            <Descriptions.Item label="paid By">{Mdata.paidBy}</Descriptions.Item>
-            <Descriptions.Item label="Product">Data disk type: MongoDB</Descriptions.Item>
+          <Descriptions title="order detail" bordered>
+            <Descriptions.Item label="Transaction Id" span={1}>
+              {Mdata?.transactionId}
+            </Descriptions.Item>
+            <Descriptions.Item label="order Email">{Mdata?.orderEmail}</Descriptions.Item>
+            <Descriptions.Item label="amount">{Mdata?.amount} </Descriptions.Item>
+            <Descriptions.Item label="paid By">{Mdata?.paidBy}</Descriptions.Item>
+            <Descriptions.Item label="country">{Mdata?.country?.name}</Descriptions.Item>
+          </Descriptions>
+          <Descriptions className="tbb" title="Products" bordered>
+            {Mdata?.products?.map((product) => (
+              <Descriptions.Item label={product.name} span={1}>
+                <ul>
+                  <li>{product.totalAmount} USD </li>
+                  <li>{product.localAmount + " " + product.localCurrency}</li>
+                </ul>
+              </Descriptions.Item>
+            ))}
           </Descriptions>
         </div>
       </Modal>
