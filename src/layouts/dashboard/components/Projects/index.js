@@ -28,7 +28,7 @@ import MDInput from "components/MDInput";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
-import { Row, Typography, Col, Button, Modal } from "antd";
+import { Row, Typography, Col, Button, Modal, Tooltip } from "antd";
 // Material Dashboard 2 React examples
 import DataTable from "examples/Tables/DataTable";
 // Data
@@ -140,21 +140,23 @@ function Projects() {
         <Row className="overflow" gutter={10}>
           {data.map((a) => (
             <Col lg={8} md={24} xs={24} style={{ marginBottom: "1rem", marginTop: "2rem" }}>
-              <Card>
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    Key : {a.key}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" component="div">
-                    value : {a.value}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button size="small" onClick={() => showModal2(a)}>
-                    update
-                  </Button>
-                </CardActions>
-              </Card>
+              <Tooltip placement="topLeft" title={a.description}>
+                <Card>
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      Key : {a.name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" component="div">
+                      value : {a.value + " " + a.sign}
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Button size="small" onClick={() => showModal2(a)}>
+                      update
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Tooltip>
             </Col>
           ))}
         </Row>
