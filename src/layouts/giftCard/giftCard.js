@@ -31,7 +31,7 @@ const options = [
     label: "GBP",
   },
   {
-    value: "EURO",
+    value: "EUR",
     label: "EUR",
   },
 ];
