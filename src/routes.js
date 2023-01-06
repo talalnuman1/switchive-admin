@@ -10,13 +10,14 @@ import GiftCard from "layouts/giftCard/giftCard";
 import CreateBlog from "layouts/createBlog";
 import SignUp from "layouts/authentication/sign-up";
 import Order from "layouts/ORDER/order";
+import Blog from "layouts/blogs";
+import UpdateBlog from "layouts/updateBlog";
+import BlogUser from "layouts/blogUser/blogUser";
 // @mui icons
 import Icon from "@mui/material/Icon";
 import { Route } from "react-router-dom";
 import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 import ViewListIcon from "@mui/icons-material/ViewList";
-import Blog from "layouts/blogs";
-import UpdateBlog from "layouts/updateBlog";
 
 const publicRoutes = [
   {
@@ -26,6 +27,41 @@ const publicRoutes = [
     icon: <Icon fontSize="small">login</Icon>,
     route: "/authentication/sign-in",
     component: <SignIn />,
+  },
+];
+const blogRoutes = [
+  {
+    type: "collapse",
+    name: "Dashboard",
+    key: "dashboard",
+    icon: <Icon fontSize="small">dashboard</Icon>,
+    route: "/dashboard",
+    component: <Dashboard />,
+  },
+  {
+    type: "collapse",
+    name: "Blog",
+    key: "Blog",
+    icon: <CardGiftcardIcon />,
+    route: "/blog",
+    component: <Blog />,
+    
+  },
+  {
+    type: "screen",
+    name: "Create Blog",
+    key: "Create Blog",
+    icon: <CardGiftcardIcon />,
+    route: "/createBlog",
+    component: <CreateBlog />,
+  },
+  {
+    type: "screen",
+    name: "Update Blog",
+    key: "Update Blog",
+    icon: <CardGiftcardIcon />,
+    route: "/updateBlog",
+    component: <UpdateBlog />,
   },
 ];
 
@@ -61,6 +97,7 @@ const routes = [
     icon: <CardGiftcardIcon />,
     route: "/blog",
     component: <Blog />,
+    
   },
   {
     type: "screen",
@@ -85,6 +122,14 @@ const routes = [
     icon: <ViewListIcon />,
     route: "/Order",
     component: <Order />,
+  },
+  {
+    type: "collapse",
+    name: "Blog User",
+    key: "blog_User",
+    icon: <ViewListIcon />,
+    route: "/blogUser",
+    component: <BlogUser />,
   },
   // {
   //   type: "collapse",
@@ -132,4 +177,4 @@ const getRoutes = (allRoutes) =>
     return null;
   });
 
-export { routes, publicRoutes, getRoutes };
+export { routes, publicRoutes, blogRoutes ,getRoutes };
