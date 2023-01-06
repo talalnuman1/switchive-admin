@@ -2,14 +2,13 @@ import { useState, useEffect, useMemo } from "react";
 
 // react-router components
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
-
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Icon from "@mui/material/Icon";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
-
+import { blogRoutes } from "./routes";
 import { message } from "antd";
 
 // Material Dashboard 2 React components
@@ -63,7 +62,7 @@ export default function App() {
   const [messageApi, contextHolder] = message.useMessage();
   const dispatchR = useDispatch();
   const [loading, setLoading] = useState(true);
-  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const { isLoggedIn, user } = useSelector((state) => state.user);
   // Cache for the rtl
   useMemo(() => {
     const cacheRtl = createCache({
@@ -176,7 +175,7 @@ export default function App() {
                 color={sidenavColor}
                 brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
                 brandName="Material Dashboard 2"
-                routes={routes}
+                routes={(user?.role === "blogWriter" ? (blogRoutes) : (routes))}
                 onMouseEnter={handleOnMouseEnter}
                 onMouseLeave={handleOnMouseLeave}
               />
@@ -186,7 +185,10 @@ export default function App() {
           )}
 
           <Routes>
-            {isLoggedIn ? getRoutes(routes) : getRoutes(publicRoutes)}
+            {/* {isLoggedIn ? getRoutes(routes) : getRoutes(publicRoutes)} */}
+            {isLoggedIn
+              ? (user?.role === "blogWriter" ? getRoutes(blogRoutes) : getRoutes(routes))
+              : getRoutes(publicRoutes)}
             {isLoggedIn ? (
               <Route path="*" element={<Navigate to="/dashboard" />} />
             ) : (
