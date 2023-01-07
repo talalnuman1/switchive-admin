@@ -67,19 +67,24 @@ function Basic() {
       data: values,
     })
       .then((res) => {
-        sessionStorage.setItem("token-access", res.data.tokens.access.token);
-        // localStorage.setItem("token-access", res.data.tokens.access.token);
-        dispatch(setLoginState(true));
-        dispatch(setUser(res.data.user));
-        setLoadingFalse();
-        messageApi.success("Login success");
-        // console.log(res.data);
+        if (res.data.user.role === "user") {
+          messageApi.error("You are not Authentcated to access Admin Panel.");
+        } else {
+          sessionStorage.setItem("token-access", res.data.tokens.access.token);
+          // localStorage.setItem("token-access", res.data.tokens.access.token);
+          dispatch(setLoginState(true));
+          dispatch(setUser(res.data.user));
+          setLoadingFalse();
+          messageApi.success("Login success");
+          // console.log(res.data);
+        }
       })
       .catch((error) => {
         // console.log(error.response.data.message);
         messageApi.error(error.response.data.message);
         setLoadingFalse();
-      });
+      })
+      .finally(() => setLoadingFalse());
   };
 
   const onFinishFailed = (errorInfo) => {
