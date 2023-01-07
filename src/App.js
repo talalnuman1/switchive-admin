@@ -173,9 +173,9 @@ export default function App() {
             <>
               <Sidenav
                 color={sidenavColor}
-                brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-                brandName="Material Dashboard 2"
-                routes={(user?.role === "blogWriter" ? (blogRoutes) : (routes))}
+                // brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
+                brandName="Switch Hive Admin"
+                routes={user?.role === "blogWriter" ? blogRoutes : routes}
                 onMouseEnter={handleOnMouseEnter}
                 onMouseLeave={handleOnMouseLeave}
               />
@@ -187,10 +187,16 @@ export default function App() {
           <Routes>
             {/* {isLoggedIn ? getRoutes(routes) : getRoutes(publicRoutes)} */}
             {isLoggedIn
-              ? (user?.role === "blogWriter" ? getRoutes(blogRoutes) : getRoutes(routes))
+              ? user?.role === "blogWriter"
+                ? getRoutes(blogRoutes)
+                : getRoutes(routes)
               : getRoutes(publicRoutes)}
             {isLoggedIn ? (
-              <Route path="*" element={<Navigate to="/dashboard" />} />
+              user?.role === "blogWriter" ? (
+                <Route path="*" element={<Navigate to="/blog" />} />
+              ) : (
+                <Route path="*" element={<Navigate to="/dashboard" />} />
+              )
             ) : (
               <Route path="*" element={<Navigate to="/authentication/sign-in" />} />
             )}
