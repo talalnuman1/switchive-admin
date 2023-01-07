@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 // @mui material components
 import Card from "@mui/material/Card";
 import Icon from "@mui/material/Icon";
+import { CircularProgress } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import CardActions from "@mui/material/CardActions";
@@ -135,11 +136,13 @@ function Projects() {
         </MDBox>
       </MDBox>
       {loading ? (
-        <h1>Loading</h1>
+       <MDBox sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+       <CircularProgress color="secondary" />
+     </MDBox>
       ) : (
         <Row className="overflow" gutter={10}>
           {data.map((a) => (
-            <Col lg={8} md={24} xs={24} style={{ marginBottom: "1rem", marginTop: "2rem" }}>
+            <Col lg={12} md={24} xs={24} style={{ marginBottom: "1rem", marginTop: "2rem" }}>
               <Tooltip placement="topLeft" title={a.description}>
                 <Card>
                   <CardContent>

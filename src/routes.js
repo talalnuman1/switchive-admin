@@ -32,20 +32,11 @@ const publicRoutes = [
 const blogRoutes = [
   {
     type: "collapse",
-    name: "Dashboard",
-    key: "dashboard",
-    icon: <Icon fontSize="small">dashboard</Icon>,
-    route: "/dashboard",
-    component: <Dashboard />,
-  },
-  {
-    type: "collapse",
     name: "Blog",
     key: "Blog",
     icon: <CardGiftcardIcon />,
     route: "/blog",
     component: <Blog />,
-    
   },
   {
     type: "screen",
@@ -97,7 +88,6 @@ const routes = [
     icon: <CardGiftcardIcon />,
     route: "/blog",
     component: <Blog />,
-    
   },
   {
     type: "screen",
@@ -125,10 +115,10 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Blog User",
-    key: "blog_User",
-    icon: <ViewListIcon />,
-    route: "/blogUser",
+    name: "create writer",
+    key: "createWriter",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/createWriter",
     component: <BlogUser />,
   },
   // {
@@ -177,4 +167,4 @@ const getRoutes = (allRoutes) =>
     return null;
   });
 
-export { routes, publicRoutes, blogRoutes ,getRoutes };
+export { routes, publicRoutes, blogRoutes, getRoutes };
