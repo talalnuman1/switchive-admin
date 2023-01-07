@@ -125,10 +125,10 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Blog User",
-    key: "blog_User",
-    icon: <ViewListIcon />,
-    route: "/blogUser",
+    name: "create writer",
+    key: "createWriter",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/createWriter",
     component: <BlogUser />,
   },
   // {

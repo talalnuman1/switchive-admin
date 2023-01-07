@@ -93,7 +93,7 @@ function Tables() {
     },
     {
       name: "Joined",
-      selector: (row) => row.joined,
+      selector: (row) => row.createdAt.split('T')[0],
     },
     {
       name: "Actions",
