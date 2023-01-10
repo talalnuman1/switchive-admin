@@ -38,7 +38,8 @@ import DataTable from "react-data-table-component";
 import team2 from "assets/images/team-2.jpg";
 import MDButton from "components/MDButton";
 import { order } from "../../api";
-import { message, Popconfirm, Pagination, Modal, Descriptions } from "antd";
+
+import { message, Popconfirm, Pagination, Modal, Descriptions, Row, Col } from "antd";
 
 function Order() {
   const [usersData, setUsersData] = useState([]);
@@ -218,25 +219,62 @@ function Order() {
       </MDBox>
       <Modal className="model" footer={[]} open={modal2} onCancel={handleCancel2}>
         <div>
-          <Descriptions title="order detail" bordered>
-            <Descriptions.Item label="Transaction Id" span={1}>
-              {Mdata?.transactionId}
-            </Descriptions.Item>
-            <Descriptions.Item label="order Email">{Mdata?.orderEmail}</Descriptions.Item>
-            <Descriptions.Item label="amount">{Mdata?.amount} </Descriptions.Item>
-            <Descriptions.Item label="paid By">{Mdata?.paidBy}</Descriptions.Item>
-            <Descriptions.Item label="country">{Mdata?.country?.name}</Descriptions.Item>
-          </Descriptions>
-          <Descriptions className="tbb" title="Products" bordered>
-            {Mdata?.products?.map((product) => (
-              <Descriptions.Item label={product.name} span={1}>
-                <ul>
-                  <li>{product.totalAmount} USD </li>
-                  <li>{product.localAmount + " " + product.localCurrency}</li>
-                </ul>
-              </Descriptions.Item>
-            ))}
-          </Descriptions>
+          <h3>Order Details</h3>
+          <div className="bg-color">
+            <Row justify="space-between">
+              <Col>
+                <div className="order-text-div">
+                  <div>
+                    <p className="order-text">Order Number</p>
+                    <p className="order-small-text">#896</p>
+                    <p className="order-text">Order Time</p>
+                    <p className="order-small-text">Jan 10,2023 - 3:58pm</p>
+                  </div>
+                </div>
+              </Col>
+              <Col>
+                <div className="order-text-div">
+                  <div>
+                    <p className="order-text">Order Price</p>
+                    <p className="order-small-text">310</p>
+                    <p className="order-text">Order Status</p>
+                    <p className="order-small-text">Cancel By System</p>
+                  </div>
+                </div>
+              </Col>
+            </Row>
+            <hr />
+          </div>
+          <div>
+            <h4>List of Products</h4>
+            <div className="jazz-div">
+              <div className="img-div">
+                <img className="jazz-style" src="https://jazz.com.pk/icon-512x512.png" alt="" />
+                <p className="jazz-text">Jazz Card</p>
+              </div>
+              <div>
+                <p className="jazz-text1">$50</p>
+              </div>
+            </div>
+            <div className="subtotal-div">
+              <p className="subtotal-text">Sub Total:</p>
+              <div>
+                <p className="subtotal-text">$50</p>
+              </div>
+            </div>
+            <div className="totalTax-div">
+              <p className="total-text">Total Tax:</p>
+              <div>
+                <p className="total-text">$5</p>
+              </div>
+            </div>
+            <div className="total-div">
+              <p className="total-text">Total:</p>
+              <div>
+                <p className="total-text">$55</p>
+              </div>
+            </div>
+          </div>
         </div>
       </Modal>
     </DashboardLayout>
