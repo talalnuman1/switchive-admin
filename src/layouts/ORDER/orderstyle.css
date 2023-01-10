@@ -1,12 +1,92 @@
-.model{
-    width: 70rem !important;
-    
-}
-.tbb{
-     margin-top: 1rem !important;
-}
-@media only screen and (max-width: 1440px) {
-    .model{
-        width: 50rem !important;
-    } 
-}
+.model {
+    width: 35rem !important;
+  }
+  .tbb {
+    margin-top: 1rem !important;
+  }
+  .order-text-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .order-text {
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+  }
+  .order-small-text {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: rgb(224, 222, 222);
+    margin-bottom: 2rem;
+  }
+  .jazz-style {
+    width: 3rem;
+  }
+  .img-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .jazz-text {
+    margin-left: 0.5rem;
+    color: black;
+  }
+  .jazz-text1 {
+    color: black;
+  }
+  .jazz-div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 4rem;
+    padding: 0.5rem;
+    background-color: #e2e2e3;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+  .total-div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    background-color: #7dd0df;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+  .subtotal-div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    margin-top: -1rem;
+  }
+  .totalTax-div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    margin-top: -0.8rem;
+  }
+  .bg-color {
+    background-color: #3991ee;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+  .total-text {
+    font-size: 1rem;
+    color: black;
+    font-weight: 500;
+  }
+  @media only screen and (max-width: 1440px) {
+    .model {
+      width: 50rem !important;
+    }
+  }
