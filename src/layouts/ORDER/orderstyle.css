@@ -1,9 +1,13 @@
 .model{
-    width: 70rem !important;
+    width: 40rem !important;
     
 }
 .tbb{
      margin-top: 1rem !important;
+}
+.contentbox{
+    
+    padding : 1rem !important;
 }
 @media only screen and (max-width: 1440px) {
     .model{

@@ -38,6 +38,7 @@ import DataTable from "react-data-table-component";
 import team2 from "assets/images/team-2.jpg";
 import MDButton from "components/MDButton";
 import { order } from "../../api";
+import { Row, Col } from "antd";
 import { message, Popconfirm, Pagination, Modal, Descriptions } from "antd";
 
 function Order() {
@@ -76,7 +77,7 @@ function Order() {
           <MDBox display="flex" alignItems="center" lineHeight={1}>
             <MDBox ml={2} lineHeight={1}>
               <MDTypography display="block" variant="button" fontWeight="medium">
-                {row.createdBy}
+              {row.user[0]?.name}
               </MDTypography>
             </MDBox>
           </MDBox>
@@ -145,7 +146,7 @@ function Order() {
     setLoading(true);
     if (sessionStorage.getItem("token-access") !== null) {
       setLoading(true);
-      order({
+      order('/byUser',{
         method: "get",
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("token-access")}`,
@@ -217,26 +218,18 @@ function Order() {
         )}
       </MDBox>
       <Modal className="model" footer={[]} open={modal2} onCancel={handleCancel2}>
-        <div>
-          <Descriptions title="order detail" bordered>
-            <Descriptions.Item label="Transaction Id" span={1}>
-              {Mdata?.transactionId}
-            </Descriptions.Item>
-            <Descriptions.Item label="order Email">{Mdata?.orderEmail}</Descriptions.Item>
-            <Descriptions.Item label="amount">{Mdata?.amount} </Descriptions.Item>
-            <Descriptions.Item label="paid By">{Mdata?.paidBy}</Descriptions.Item>
-            <Descriptions.Item label="country">{Mdata?.country?.name}</Descriptions.Item>
-          </Descriptions>
-          <Descriptions className="tbb" title="Products" bordered>
-            {Mdata?.products?.map((product) => (
-              <Descriptions.Item label={product.name} span={1}>
-                <ul>
-                  <li>{product.totalAmount} USD </li>
-                  <li>{product.localAmount + " " + product.localCurrency}</li>
-                </ul>
-              </Descriptions.Item>
-            ))}
-          </Descriptions>
+        <div className="contentbox">
+          <Row justify="space-between">
+            <Col lg={12}>
+              <p>Transaction Id : {Mdata?.transactionId}</p>
+              <p>Country : {Mdata?.country?.name}</p>
+            </Col>
+            <Col lg={10}>
+              <p>Order Email : {Mdata?.orderEmail}</p>
+              <p>Coin paid by: {Mdata?.paidBy}</p>
+            </Col>
+          </Row>
+          <div className="content">{/* <p>created By : {Mdata?.createdBy}</p> */}</div>
         </div>
       </Modal>
     </DashboardLayout>
