@@ -38,9 +38,7 @@ import DataTable from "react-data-table-component";
 import team2 from "assets/images/team-2.jpg";
 import MDButton from "components/MDButton";
 import { order } from "../../api";
-import { Row, Col } from "antd";
-import { message, Popconfirm, Pagination, Modal, Descriptions } from "antd";
-
+import { message, Popconfirm, Pagination, Modal, Descriptions, Row, Col } from "antd";
 function Order() {
   const [usersData, setUsersData] = useState([]);
   const [page, setpage] = useState(1);
@@ -77,7 +75,7 @@ function Order() {
           <MDBox display="flex" alignItems="center" lineHeight={1}>
             <MDBox ml={2} lineHeight={1}>
               <MDTypography display="block" variant="button" fontWeight="medium">
-              {row.user[0]?.name}
+                {row.user[0]?.name}
               </MDTypography>
             </MDBox>
           </MDBox>
@@ -146,7 +144,7 @@ function Order() {
     setLoading(true);
     if (sessionStorage.getItem("token-access") !== null) {
       setLoading(true);
-      order('/byUser',{
+      order("/byUser", {
         method: "get",
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("token-access")}`,
@@ -160,6 +158,7 @@ function Order() {
           setUsersData([...res.data.results]);
           console.log(res.data.results);
           settotal(res.data.totalResults);
+          setMdata(res.data.results[0])
           setLoadingFalse();
           message.success("orders fetched successfully");
         })
@@ -217,21 +216,74 @@ function Order() {
           </Grid>
         )}
       </MDBox>
-      <Modal className="model" footer={[]} open={modal2} onCancel={handleCancel2}>
-        <div className="contentbox">
-          <Row justify="space-between">
-            <Col lg={12}>
-              <p>Transaction Id : {Mdata?.transactionId}</p>
-              <p>Country : {Mdata?.country?.name}</p>
-            </Col>
-            <Col lg={10}>
-              <p>Order Email : {Mdata?.orderEmail}</p>
-              <p>Coin paid by: {Mdata?.paidBy}</p>
-            </Col>
-          </Row>
-          <div className="content">{/* <p>created By : {Mdata?.createdBy}</p> */}</div>
-        </div>
-      </Modal>
+      {Mdata?.user?.length>0 && (
+        <Modal className="model" footer={[]} open={modal2} onCancel={handleCancel2}>
+          <div>
+            <h3>Order Details</h3>
+            <div className="bg-color">
+              <Row justify="space-between">
+                <Col>
+                  <div className="order-text-div">
+                    <div>
+                      <p className="order-text">Created By</p>
+                      <p className="order-small-text">{Mdata?.user[0]?.name}</p>
+                      <p className="order-text">Order Number</p>
+                      <p className="order-small-text">{Mdata?.transactionId}</p>
+                      <p className="order-text">Paid By</p>
+                      <p className="order-small-text">{Mdata?.paidBy}</p>
+                    </div>
+                  </div>
+                </Col>
+                <Col>
+                  <div className="order-text-div">
+                    <div>
+                      <p className="order-text">Order Price</p>
+                      <p className="order-small-text">{Mdata?.amount.toFixed(2)}</p>
+                      <p className="order-text">Order Date</p>
+                      <p className="order-small-text">{Mdata?.createdAt?.split("T")[0]}</p>
+                      <p className="order-text">Coin</p>
+                      <p className="order-small-text">{Mdata?.paidCoin}</p>
+                    </div>
+                  </div>
+                </Col>
+              </Row>
+              <hr />
+            </div>
+            <div>
+              <h4>List of Products</h4>
+              {Mdata?.products?.map((product) => (
+                <div className="jazz-div">
+                  <div className="img-div">
+                    <img className="jazz-style" src={product.logoUrls} alt="" />
+                    <p className="jazz-text">{product.name}</p>
+                  </div>
+                  <div>
+                    <p className="jazz-text1">${product.totalAmount.toFixed(2)}</p>
+                  </div>
+                </div>
+              ))}
+              <div className="subtotal-div">
+                <p className="subtotal-text">Sub Total:</p>
+                <div>
+                  <p className="subtotal-text">${Mdata?.amount}</p>
+                </div>
+              </div>
+              <div className="totalTax-div">
+                <p className="total-text">Total Tax:</p>
+                <div>
+                  <p className="total-text">$0</p>
+                </div>
+              </div>
+              <div className="total-div">
+                <p className="total-text">Total:</p>
+                <div>
+                  <p className="total-text">${Mdata?.amount}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Modal>
+      )}
     </DashboardLayout>
   );
 }
